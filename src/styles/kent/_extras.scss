@@ -1,0 +1,183 @@
+// ---- Scrollbar ramping (Kent: drawer, halaman, riwayat, composer) ----
+// Tanpa track, thumb tipis abu-abu muda; lebih jelas saat area di-hover
+// :where = spesifisitas 0 dan tanpa `transition`: aturan lama `* { transition: scrollbar-color }`
+// menimpa transisi semua elemen Kent (panel riwayat tidak beranimasi saat melebar).
+:where(.kt-ai, .kt-ai-page),
+:where(.kt-ai, .kt-ai-page) * {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+:where(.kt-ai, .kt-ai-page):hover,
+:where(.kt-ai, .kt-ai-page) *:hover {
+  scrollbar-color: color-mix(in srgb, var(--kt-ink) 16%, transparent) transparent;
+}
+
+// ---- Preview gambar terkirim di gelembung user ----
+.kt-ai-shots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.kt-ai-shot {
+  display: block;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--kt-surface);
+  box-shadow: inset 0 0 0 0.6px var(--kt-line);
+
+  img {
+    display: block;
+    max-width: 220px;
+    max-height: 180px;
+    object-fit: cover;
+  }
+}
+
+// Label fase di depan baris status (Thinking, Research, Writing, …)
+.kt-ai-status__phase {
+  flex: none;
+  padding: 0 6px;
+  border-radius: 4px;
+  background: var(--kt-surface);
+  color: var(--kt-ink-2);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+// ---- Menu + (Add photos / Add files), membuka ke atas ----
+.kt-ai-plus {
+  position: relative;
+  flex: none;
+}
+.kt-page .kt-ai-attach--on {
+  background: var(--kt-surface);
+  color: var(--kt-ink);
+}
+.kt-page .kt-ai-attach svg {
+  transition: rotate var(--dur-3) var(--ease-kt);
+}
+.kt-page .kt-ai-attach--on svg {
+  rotate: 45deg;
+}
+.kt-ai-plus__menu {
+  top: auto;
+  right: auto;
+  left: 0;
+  bottom: calc(100% + 6px);
+  width: 248px;
+  transform-origin: bottom left;
+}
+.kt-page .kt-ai-plus__item {
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 10px;
+  white-space: normal;
+
+  > svg {
+    flex: none;
+    margin-top: 3px;
+    color: var(--kt-ink-2);
+  }
+}
+.kt-ai-plus__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  line-height: 20px;
+}
+.kt-ai-plus__hint {
+  color: var(--kt-ink-3);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+// ---- Antrean pesan (dikirim setelah alur Kent sekarang selesai) ----
+.kt-ai-queue {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.kt-ai-queue__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  height: 30px;
+  padding: 0 4px 0 8px;
+  border-radius: 6px;
+  background: var(--kt-surface);
+  color: var(--kt-ink-2);
+  font-size: 12px;
+  line-height: 18px;
+  animation: kt-ai-queue-in var(--dur-3) var(--ease-kt) both;
+
+  > svg {
+    flex: none;
+    color: var(--kt-ink-3);
+  }
+  button {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    margin-left: auto;
+    border-radius: 4px;
+    color: var(--kt-ink-3);
+
+    &:hover {
+      background: var(--kt-surface-2);
+      color: var(--kt-ink);
+    }
+  }
+}
+.kt-ai-queue__label {
+  flex: none;
+  color: var(--kt-ink-3);
+}
+.kt-ai-queue__text {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--kt-ink);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@keyframes kt-ai-queue-in {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+  }
+}
+
+// ---- Seret & lepas ke seluruh panel chat (drawer sudah fixed, halaman __chat relative) ----
+.kt-ai-dropzone {
+  position: absolute;
+  inset: 8px;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--kt-brand-tint) 88%, transparent);
+  box-shadow: inset 0 0 0 1.5px var(--kt-brand);
+  animation: kt-fade-in var(--dur-2) var(--ease-kt) both;
+}
+.kt-ai-dropzone__box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--kt-brand);
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 500;
+  pointer-events: none;
+}
+.kt-ai-dropzone__hint {
+  color: var(--kt-ink-2);
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
+}

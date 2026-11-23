@@ -1,0 +1,100 @@
+// ---- Logo Kent (KentMark.tsx) ----
+// Gerak dijalankan rig JS (components/admin/ai/kent-rig.ts); di sini hanya warna dan kursor.
+// Warna dari variabel inline (kentVars): --kb badan, --ke mata, --kd detail, --kt alat/efek,
+// dan pasangan --kbd/--ked/--kdd/--ktd untuk latar gelap (tombol hitam, tema gelap, .kt-kent--on-dark).
+.kt-kent {
+  flex: none;
+  display: block;
+  overflow: visible;
+  --k-body: var(--kb, #0b0b0c);
+  --k-eye: var(--ke, #ffffff);
+  --k-detail: var(--kd, #2f7bff);
+  --k-tool: var(--kt, #2f7bff);
+  --k-mouth: var(--km, #2f7bff);
+}
+html[data-theme='dark'] .kt-kent,
+.kt-kent--on-dark,
+.kt-on-dark .kt-kent {
+  --k-body: var(--kbd, #ffffff);
+  --k-eye: var(--ked, #0b0b0c);
+  --k-detail: var(--kdd, #2f7bff);
+  --k-tool: var(--ktd, #2f7bff);
+  --k-mouth: var(--kmd, #2f7bff);
+}
+.kt-kent .k-fb {
+  fill: var(--k-body);
+}
+.kt-kent .k-sb {
+  stroke: var(--k-body);
+}
+.kt-kent .k-fe {
+  fill: var(--k-eye);
+}
+.kt-kent .k-se {
+  stroke: var(--k-eye);
+  fill: none;
+}
+.kt-kent .k-fd {
+  fill: var(--k-detail);
+}
+.kt-kent .k-sd {
+  stroke: var(--k-detail);
+}
+.kt-kent .k-fm {
+  fill: var(--k-mouth);
+}
+.kt-kent .k-sm {
+  stroke: var(--k-mouth);
+  fill: none;
+}
+.kt-kent .k-ft {
+  fill: var(--k-tool);
+}
+.kt-kent .k-st {
+  stroke: var(--k-tool);
+  fill: none;
+}
+// Ganti warna terasa lembut (studio, hover tombol)
+.kt-kent :is(.k-fb, .k-fe, .k-fd, .k-ft, .k-fm) {
+  transition: fill 220ms var(--ease-kt);
+}
+.kt-kent :is(.k-sb, .k-se, .k-sd, .k-st, .k-sm) {
+  transition: stroke 220ms var(--ease-kt);
+}
+.kt-kent--lively {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+// Baling-baling topi: putaran dilihat dari samping
+.kt-kent__prop {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: kt-kent-prop 520ms linear infinite;
+}
+@keyframes kt-kent-prop {
+  50% {
+    transform: scaleX(0.12);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kt-kent__prop {
+    animation: none;
+  }
+}
+
+// Bentuk Saturnus: cincin berputar (garis putus-putus bergeser + bulan kecil mengorbit)
+.kt-kent__ring {
+  stroke-dasharray: 2.2 1.4;
+  animation: kt-kent-ring 2.4s linear infinite;
+}
+@keyframes kt-kent-ring {
+  to {
+    stroke-dashoffset: -7.2;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kt-kent__ring,
+  .kt-kent__moon {
+    animation: none;
+  }
+}

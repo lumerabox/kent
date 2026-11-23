@@ -1,0 +1,108 @@
+// send ↔ stop morph, incoming messages, web sources
+.kt-page .kt-ai-send {
+  position: relative;
+  overflow: hidden;
+  transition:
+    border-radius var(--dur-3) var(--ease-kt),
+    background-color var(--dur-2) var(--ease-kt),
+    opacity var(--dur-2) var(--ease-kt);
+}
+.kt-page .kt-ai-send--stop {
+  border-radius: 15px;
+}
+.kt-ai-send__icon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transition:
+    opacity var(--dur-2) var(--ease-kt),
+    transform var(--dur-3) var(--ease-kt);
+}
+.kt-ai-send__icon--stop {
+  opacity: 0;
+  transform: scale(0.4) rotate(-90deg);
+}
+.kt-ai-send--stop {
+  .kt-ai-send__icon--send {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.6);
+  }
+  .kt-ai-send__icon--stop {
+    opacity: 1;
+    transform: none;
+  }
+}
+.kt-ai-editing {
+  margin: 0 0 4px;
+  color: var(--kt-muted);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+// New messages rise in (only the last two, not loaded history)
+.kt-ai-in {
+  animation: kt-ai-in var(--dur-4) var(--ease-kt) both;
+}
+.kt-ai-user.kt-ai-in {
+  transform-origin: 100% 100%;
+  animation-name: kt-ai-in-user;
+}
+@keyframes kt-ai-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@keyframes kt-ai-in-user {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+}
+
+// Sumber web sebagai kartu (domain, judul, tanggal)
+.kt-ai-sources {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+.kt-page a.kt-ai-source {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--kt-surface);
+  color: var(--kt-ink);
+  text-decoration: none;
+  transition: background-color var(--dur-2) var(--ease-kt);
+
+  &:hover {
+    background: var(--kt-brand-tint);
+  }
+}
+.kt-ai-source__domain {
+  overflow: hidden;
+  color: var(--kt-brand);
+  font-size: 12px;
+  line-height: 16px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.kt-ai-source__title {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 18px;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.kt-ai-source__date {
+  color: var(--kt-muted);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+// Grafik kecil dari data analytics

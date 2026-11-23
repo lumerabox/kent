@@ -1,0 +1,528 @@
+// ---- Kent bermagnet (KentGrab) ----
+.kt-kent-grab {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+}
+.kt-kent-grab__body {
+  position: relative;
+  z-index: 2;
+  display: block;
+  cursor: grab;
+
+  // Area pegang lebih lebar dari badan Kent (mudah ditahan & diseret)
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -16px;
+    border-radius: 50%;
+  }
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  will-change: transform;
+  transform-origin: 50% 60%;
+
+  .kt-kent-grab--held & {
+    cursor: grabbing;
+  }
+  .kt-kent--lively {
+    cursor: inherit;
+  }
+}
+.kt-kent-grab-float {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+
+  .kt-kent-grab__hint {
+    pointer-events: auto;
+  }
+  &.kt-kent-grab--start .kt-kent-grab__hint {
+    left: 0;
+    translate: 0 0;
+
+    &::before {
+      left: 22px;
+    }
+  }
+}
+.kt-page .kt-kent-grab__hint {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 14px 0 10px;
+  border-radius: 16px;
+  background: var(--kt-brand);
+  box-shadow: 0 6px 16px -8px rgb(1 86 252 / 0.6);
+  color: #fff;
+  font-size: 12px;
+  line-height: 18px;
+  white-space: nowrap;
+  translate: -50% 0;
+  transition:
+    scale var(--dur-4) var(--ease-kt-spring),
+    background var(--dur-2) var(--ease-kt);
+  animation: kt-kent-hint 420ms var(--ease-kt-spring) both;
+
+  // Ekor kecil ke arah Kent
+  &::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: inherit;
+    transform: translateX(-50%) rotate(45deg);
+  }
+  &:hover {
+    background: var(--kt-brand-hover);
+    scale: 1.05;
+  }
+  &:active {
+    scale: 0.96;
+  }
+  .kt-kent-grab--start & {
+    left: 0;
+    translate: 0 0;
+
+    &::before {
+      left: 22px;
+    }
+  }
+}
+@keyframes kt-kent-hint {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.6);
+  }
+}
+
+// ---- Studio tampilan Kent: modal tengah, 2 kolom (pratinjau | pengaturan) ----
+.kt-kent-studio {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgb(15 23 42 / 0.16);
+  animation: kt-kent-fade var(--dur-2) var(--ease-kt) both;
+
+  &--leave {
+    animation: kt-kent-fade-out var(--dur-2) var(--ease-kt) both;
+  }
+}
+.kt-kent-studio__card {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  width: min(860px, 100%);
+  height: min(600px, calc(100vh - 48px));
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--kt-bg);
+  box-shadow:
+    inset 0 0 0 1px var(--kt-line),
+    0 16px 40px -24px rgb(15 23 42 / 0.28);
+  outline: none;
+  animation: kt-kent-card var(--dur-4) var(--ease-kt) both;
+
+  .kt-kent-studio--leave & {
+    animation: kt-kent-card-out var(--dur-2) var(--ease-kt) both;
+  }
+}
+.kt-kent-studio__preview {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: var(--kt-brand-tint);
+  box-shadow: inset -1px 0 0 var(--kt-line);
+  user-select: none;
+  -webkit-user-select: none;
+}
+// Lantai tempat Kent berdiri
+.kt-kent-studio__stage {
+  position: absolute;
+  bottom: 9px;
+  left: 50%;
+  width: 150px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgb(1 86 252 / 0.12);
+  translate: -50% 0;
+}
+.kt-kent-studio__big {
+  position: relative;
+  margin-bottom: 20px;
+  animation: kt-kent-grow 620ms 60ms var(--ease-kt) both;
+}
+.kt-kent-studio__name {
+  color: var(--kt-ink);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+}
+.kt-kent-studio__tip {
+  color: var(--kt-ink-3);
+  font-size: 12px;
+  line-height: 18px;
+}
+.kt-page .kt-kent-studio__surprise {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  margin-top: 14px;
+  padding: 0 14px 0 12px;
+  border-radius: 17px;
+  background: var(--kt-brand);
+  color: #fff;
+  font-size: 13px;
+  transition:
+    scale var(--dur-4) var(--ease-kt-spring),
+    background var(--dur-2) var(--ease-kt);
+
+  svg {
+    transition: rotate 520ms var(--ease-kt-spring);
+  }
+  &:hover {
+    background: var(--kt-brand-hover);
+    scale: 1.04;
+
+    svg {
+      rotate: 180deg;
+    }
+  }
+  &:active {
+    scale: 0.95;
+  }
+}
+.kt-kent-studio__panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.kt-kent-studio__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px 8px 28px;
+  color: var(--kt-ink);
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 500;
+}
+.kt-page .kt-kent-studio__close {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  color: var(--kt-ink-2);
+
+  &:hover {
+    background: var(--kt-surface);
+    color: var(--kt-ink);
+  }
+}
+.kt-kent-studio__tabs {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+  margin: 4px 28px 0;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--kt-surface);
+}
+.kt-kent-studio__tab-pill {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc((100% - 6px) / var(--n));
+  border-radius: 7px;
+  background: var(--kt-brand);
+  translate: calc(var(--at) * 100%) 0;
+  transition: translate var(--dur-4) var(--ease-kt-spring);
+}
+.kt-page .kt-kent-studio__tab {
+  position: relative;
+  height: 30px;
+  border-radius: 7px;
+  color: var(--kt-ink-2);
+  font-size: 12px;
+  text-align: center;
+  white-space: nowrap;
+  transition: color var(--dur-2) var(--ease-kt);
+
+  &:hover {
+    color: var(--kt-ink);
+  }
+  &[aria-selected='true'] {
+    color: #fff;
+  }
+}
+.kt-kent-studio__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 24px;
+  min-height: 0;
+  padding: 16px 28px 24px;
+  overflow-y: auto;
+}
+.kt-kent-studio__group h3 {
+  margin: 0 0 10px;
+  color: var(--kt-ink-2);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 500;
+}
+.kt-kent-studio__swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.kt-page .kt-kent-studio__swatch,
+.kt-kent-studio__swatch {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--sw);
+  box-shadow: inset 0 0 0 1px rgb(15 23 42 / 0.12);
+  transition: scale var(--dur-4) var(--ease-kt-spring);
+
+  &:hover {
+    scale: 1.14;
+  }
+  &:active {
+    scale: 0.92;
+  }
+  &[aria-checked='true'],
+  &[data-on] {
+    scale: 1.08;
+    box-shadow:
+      inset 0 0 0 1px rgb(15 23 42 / 0.12),
+      0 0 0 2px var(--kt-bg),
+      0 0 0 4px var(--kt-brand);
+  }
+}
+// Warna bebas: cincin putus-putus, isi = warna terpilih bila bukan dari daftar
+.kt-kent-studio__swatch--custom {
+  display: block;
+  cursor: pointer;
+  background: var(--kt-bg);
+  box-shadow: none;
+  outline: 1px dashed var(--kt-ink-3);
+  outline-offset: -1px;
+
+  &::after {
+    content: '+';
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--kt-ink-2);
+    font-size: 16px;
+  }
+  &[data-on] {
+    background: var(--sw);
+    outline: none;
+
+    &::after {
+      content: none;
+    }
+  }
+  input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+}
+.kt-kent-studio__tiles {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+.kt-page .kt-kent-studio__tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 4px 10px;
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 1px var(--kt-line);
+  color: var(--kt-ink-2);
+  font-size: 12px;
+  line-height: 18px;
+  white-space: nowrap;
+  transition:
+    scale var(--dur-4) var(--ease-kt-spring),
+    background var(--dur-2) var(--ease-kt),
+    box-shadow var(--dur-2) var(--ease-kt);
+  animation: kt-kent-tile 360ms calc(var(--i) * 18ms) var(--ease-kt) both;
+
+  .kt-kent {
+    transition: translate var(--dur-4) var(--ease-kt-spring), rotate var(--dur-4) var(--ease-kt-spring);
+  }
+  &:hover {
+    background: var(--kt-surface);
+
+    .kt-kent {
+      translate: 0 -3px;
+      rotate: -6deg;
+    }
+  }
+  &:active {
+    scale: 0.94;
+  }
+  &[aria-checked='true'] {
+    box-shadow: inset 0 0 0 1.5px var(--kt-brand);
+    background: var(--kt-brand-tint);
+    color: var(--kt-brand);
+  }
+}
+@keyframes kt-kent-tile {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.94);
+  }
+}
+.kt-kent-studio__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 28px;
+  box-shadow: inset 0 1px 0 var(--kt-line);
+  color: var(--kt-ink-3);
+  font-size: 12px;
+  line-height: 18px;
+}
+.kt-page .kt-kent-studio__reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 10px;
+  margin-left: -10px;
+  border-radius: 6px;
+  color: var(--kt-ink-2);
+  font-size: 13px;
+
+  &:hover {
+    background: var(--kt-surface);
+    color: var(--kt-ink);
+  }
+}
+@keyframes kt-kent-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes kt-kent-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes kt-kent-card {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+}
+@keyframes kt-kent-card-out {
+  to {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+}
+@keyframes kt-kent-grow {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-8deg);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.06) rotate(2deg);
+  }
+  80% {
+    transform: scale(0.98) rotate(-1deg);
+  }
+}
+@media (max-width: 767px) {
+  .kt-kent-studio {
+    padding: 12px;
+  }
+  .kt-kent-studio__card {
+    grid-template-columns: 1fr;
+    grid-template-rows: 230px minmax(0, 1fr);
+    height: calc(100vh - 24px);
+  }
+  .kt-kent-studio__preview {
+    box-shadow: inset 0 -1px 0 var(--kt-line);
+
+    .kt-kent-studio__big .kt-kent {
+      width: 110px;
+      height: 110px;
+    }
+  }
+  .kt-kent-studio__big {
+    margin-bottom: 8px;
+  }
+  .kt-kent-studio__stage {
+    bottom: 5px;
+    width: 100px;
+    height: 14px;
+  }
+  .kt-kent-studio__tip {
+    display: none;
+  }
+  .kt-page .kt-kent-studio__surprise {
+    margin-top: 6px;
+  }
+  .kt-kent-studio__tabs {
+    margin-inline: 12px;
+  }
+  .kt-page .kt-kent-studio__tab {
+    font-size: 11px;
+  }
+  .kt-kent-studio__tiles {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .kt-kent-studio__head,
+  .kt-kent-studio__body,
+  .kt-kent-studio__foot {
+    padding-inline: 20px;
+  }
+}
+
+// Lampiran gambar di composer: pratinjau kecil + status membaca
+.kt-ai-file__thumb {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+.kt-ai-file--busy svg {
+  animation: kt-ai-spin 900ms linear infinite;
+}
+@keyframes kt-ai-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

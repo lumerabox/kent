@@ -1,0 +1,461 @@
+// ---- Composer ----
+.kt-ai-composer {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px 14px 10px;
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px var(--kt-line);
+  background: var(--kt-bg);
+  cursor: text;
+
+  transition: box-shadow var(--dur-2) var(--ease-kt);
+
+  // Fokus: abu-abu sedikit lebih gelap dari garis biasa, tanpa bayangan gelap
+  &:focus-within {
+    box-shadow: inset 0 0 0 1px #c9ced6;
+  }
+  &.kt-drop--on {
+    box-shadow: inset 0 0 0 1px var(--kt-brand);
+    background: var(--kt-brand-tint);
+  }
+}
+// Satu baris: + · teks · mode · kirim sejajar; teks panjang → --multi (teks di atas, kontrol di bawah)
+.kt-ai-composer:not(.kt-ai-composer--multi) {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: 10px 6px;
+  padding: 10px;
+
+  > .kt-ai-files,
+  > .kt-ai-queue {
+    grid-column: 1 / -1;
+  }
+  .kt-ai-composer__row {
+    display: contents;
+  }
+  .kt-ai-plus {
+    order: 1;
+  }
+  .kt-ai-composer__input {
+    order: 2;
+    padding-left: 2px;
+  }
+  .kt-ai-mode {
+    order: 3;
+  }
+  .kt-ai-quota {
+    order: 4;
+  }
+  .kt-ai-send {
+    order: 5;
+  }
+  // Tanpa cincin pencarian (drawer tanpa lampiran): kolom kelima tidak dipakai
+  &:not(:has(.kt-ai-quota)) {
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+  }
+  .kt-ai-composer__fill {
+    display: none;
+  }
+}
+// ---- Lampiran ----
+.kt-page .kt-ai-attach {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  color: var(--kt-ink-2);
+
+  &:hover {
+    background: var(--kt-surface);
+    color: var(--kt-ink);
+  }
+  &:disabled {
+    cursor: default;
+    opacity: 0.4;
+    background: none;
+  }
+}
+.kt-ai-files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  &--sent {
+    justify-content: flex-end;
+  }
+}
+.kt-ai-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 220px;
+  height: 30px;
+  padding: 0 6px 0 9px;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px var(--kt-line);
+  background: var(--kt-bg);
+  color: var(--kt-ink-2);
+  font-size: 12px;
+  line-height: 18px;
+  box-sizing: border-box;
+  animation: kt-kent-pop var(--dur-4) var(--ease-kt) both;
+
+  svg {
+    flex: none;
+    color: var(--kt-brand);
+  }
+  .kt-ai-files--sent & {
+    padding-right: 10px;
+  }
+}
+.kt-ai-file__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--kt-ink);
+}
+.kt-page .kt-ai-file button {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  color: var(--kt-ink-3);
+
+  &:hover {
+    background: var(--kt-surface);
+    color: var(--kt-ink);
+  }
+}
+.kt-page .kt-ai-composer__input:is(:focus, :focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+.kt-ai-composer__input {
+  display: block;
+  width: 100%;
+  height: 22px;
+  max-height: 121px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  resize: none;
+  background: none;
+  color: var(--kt-ink);
+  font: inherit;
+  font-size: 14px;
+  line-height: 22px;
+
+  &::placeholder {
+    color: var(--kt-ink-3);
+  }
+}
+.kt-ai-composer__row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  height: 30px;
+}
+.kt-ai-composer__fill {
+  flex: 1;
+}
+.kt-page .kt-ai-chip,
+.kt-ai-chip {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 5px;
+  max-width: 200px;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 6px;
+  background: var(--kt-surface);
+  color: var(--kt-ink-2);
+  font-size: 12px;
+  line-height: 18px;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+.kt-ai-chip__text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.kt-page .kt-ai-chip--on {
+  background: var(--kt-brand-tint);
+  color: var(--kt-brand);
+}
+.kt-page .kt-ai-send {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: var(--kt-brand);
+  color: var(--kt-bg);
+
+  &:hover {
+    background: var(--kt-brand-hover);
+  }
+  &:disabled {
+    cursor: default;
+    opacity: 0.4;
+    background: var(--kt-brand);
+  }
+}
+
+// ---- Reasoning mode picker (Ultra … Low) ----
+.kt-ai-mode {
+  flex: none;
+}
+// Drawer 420px: chip konteks/skill menyusut lebih dulu supaya mode + tombol kirim tetap terlihat
+.kt-page .kt-ai-composer__row > span.kt-ai-chip + span.kt-ai-chip {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+.kt-page .kt-ai-mode__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 26px;
+  padding: 0 6px 0 8px;
+  border-radius: 6px;
+  color: var(--kt-ink-2);
+  font-size: 12px;
+  line-height: 18px;
+
+  &:hover,
+  &--on {
+    background: var(--kt-surface);
+    color: var(--kt-ink);
+  }
+}
+.kt-ai-mode__menu {
+  top: auto;
+  right: 0;
+  left: auto;
+  bottom: calc(100% + 6px);
+  width: 260px;
+}
+.kt-ai-mode__head {
+  padding: 8px 10px 6px;
+  color: var(--kt-ink);
+  font-size: 13px;
+  line-height: 20px;
+}
+.kt-page .kt-ai-mode__item {
+  align-items: flex-start;
+  padding: 8px 10px;
+  white-space: normal;
+
+  > svg {
+    flex: none;
+    margin-top: 3px;
+    color: var(--kt-brand);
+  }
+}
+.kt-ai-mode__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  line-height: 20px;
+}
+.kt-ai-mode__hint {
+  color: var(--kt-ink-3);
+  font-size: 12px;
+  line-height: 18px;
+}
+.kt-ai-mode__check {
+  flex: none;
+  width: 14px;
+}
+
+// ---- Pencarian web bulan ini (cincin di composer + popover) ----
+.kt-ai-quota {
+  display: flex;
+  flex: none;
+  align-items: center;
+  align-self: center;
+}
+// Lingkaran murni setinggi pemilih mode (26px); latar hanya saat hover/terbuka
+.kt-page .kt-ai-quota__btn {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border-radius: 6px;
+  background: transparent;
+  transition: background-color var(--dur-2) var(--ease-kt);
+
+  &:hover,
+  &--on {
+    background: var(--kt-surface);
+  }
+}
+.kt-ai-quota__track {
+  stroke: var(--kt-line);
+}
+.kt-ai-quota__bar {
+  stroke: var(--kt-brand);
+  transition: stroke-dasharray var(--dur-4) var(--ease-kt);
+}
+.kt-ai-quota--high .kt-ai-quota__bar {
+  stroke: var(--kt-ink-2);
+}
+.kt-ai-quota--full .kt-ai-quota__bar {
+  stroke: var(--kt-down);
+}
+.kt-ai-quota__menu {
+  top: auto;
+  right: 0;
+  left: auto;
+  bottom: calc(100% + 6px);
+  gap: 0;
+  width: 240px;
+  padding: 12px;
+}
+.kt-ai-quota__head {
+  display: flex;
+  justify-content: space-between;
+  color: var(--kt-ink-3);
+  font-size: 12px;
+  line-height: 18px;
+
+  span:first-child {
+    color: var(--kt-ink-2);
+  }
+}
+.kt-ai-quota__num {
+  margin-top: 6px;
+  color: var(--kt-ink);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 28px;
+  font-variant-numeric: tabular-nums;
+
+  span {
+    color: var(--kt-ink-3);
+    font-size: 13px;
+    font-weight: 400;
+  }
+}
+.kt-ai-quota__bar {
+  height: 4px;
+  margin-top: 8px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--kt-surface);
+
+  span {
+    display: block;
+    height: 100%;
+    border-radius: 2px;
+    background: var(--kt-brand);
+    transition: width var(--dur-4) var(--ease-kt);
+  }
+  .kt-ai-quota--high & span {
+    background: var(--kt-ink-2);
+  }
+  .kt-ai-quota--full & span {
+    background: var(--kt-down);
+  }
+}
+.kt-ai-quota__meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  color: var(--kt-ink-3);
+  font-size: 12px;
+  line-height: 18px;
+}
+.kt-ai-quota__note {
+  margin: 8px 0 0;
+  color: var(--kt-ink-2);
+  font-size: 12px;
+  line-height: 18px;
+}
+.kt-page .kt-ai-quota__link {
+  display: block;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 0.6px solid var(--kt-line);
+  color: var(--kt-brand);
+  font-size: 12px;
+  line-height: 18px;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// ---- Status berpikir / tool ----
+.kt-ai-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--kt-ink-3);
+  font-size: 13px;
+  line-height: 22px;
+
+}
+
+// Teks progres berganti: masuk dari bawah
+.kt-ai-status__text {
+  display: inline-block;
+  animation: kt-ai-step var(--dur-4) var(--ease-kt) both;
+}
+@keyframes kt-ai-step {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+    filter: blur(2px);
+  }
+}
+.kt-ai-took {
+  margin: 8px 0 0;
+  color: var(--kt-ink-3);
+  font-size: 12px;
+  line-height: 18px;
+  font-variant-numeric: tabular-nums;
+}
+.kt-ai-status__time {
+  color: var(--kt-ink-3);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.8;
+}
+// Teks status berkilau (berjalan dari kiri ke kanan) selama Kent bekerja
+.kt-ai-shine {
+  color: var(--kt-ink-3);
+  background: linear-gradient(100deg, var(--kt-ink-3) 0%, var(--kt-ink-3) 40%, var(--kt-ink) 50%, var(--kt-ink-3) 60%, var(--kt-ink-3) 100%) 0 0 / 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: kt-ai-shine 1.8s linear infinite;
+}
+@keyframes kt-ai-shine {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kt-ai-status__text {
+    animation: none;
+  }
+  .kt-ai-shine {
+    animation: none;
+    -webkit-text-fill-color: currentColor;
+  }
+}

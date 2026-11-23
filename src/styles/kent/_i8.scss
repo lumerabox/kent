@@ -1,0 +1,370 @@
+// ---- I8: memori Kent, 👍/👎, slash command ----
+.kt-page .kt-ai-page__foot .kt-ai-page__mem-btn {
+  margin-right: auto;
+  margin-left: 0;
+
+  .kt-ai-page--compact & {
+    margin: 0 0 0 1px;
+  }
+}
+.kt-ai-memory__body {
+  display: flex;
+  gap: 10px;
+
+  > svg {
+    flex: none;
+    margin-top: 3px;
+    color: var(--kt-brand);
+  }
+}
+.kt-ai-memory__text,
+.kt-ai-mem__text {
+  color: var(--kt-ink);
+  font-size: 14px;
+  line-height: 22px;
+}
+.kt-ai-memory__warn {
+  color: var(--kt-ink-2);
+  font-size: 12px;
+  line-height: 18px;
+}
+.kt-ai-memory[data-state='ignored'] {
+  opacity: 0.6;
+  transition: opacity var(--dur-2) var(--ease-kt);
+}
+.kt-ai-tools--rate {
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-kt);
+
+  .kt-ai-answer:hover &,
+  &:focus-within,
+  &:has([data-on]) {
+    opacity: 1;
+  }
+}
+.kt-ai-tools {
+  flex-wrap: wrap;
+
+  button[data-on] {
+    color: var(--kt-brand);
+  }
+}
+.kt-ai-rate {
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px var(--kt-line);
+  animation: kt-rise var(--dur-3) var(--ease-kt) both;
+}
+.kt-ai-rate__title {
+  color: var(--kt-ink-2);
+  font-size: 13px;
+  line-height: 20px;
+}
+.kt-ai-rate__chips,
+.kt-ai-mem__seg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.kt-page .kt-ai-rate .kt-ai-chip,
+.kt-page .kt-ai-mem .kt-ai-chip {
+  width: auto;
+  height: 28px;
+  color: var(--kt-ink-2);
+  transition:
+    background-color var(--dur-2) var(--ease-kt),
+    color var(--dur-2) var(--ease-kt);
+
+  &[aria-pressed='true'],
+  &[aria-checked='true'] {
+    background: var(--kt-brand-tint);
+    color: var(--kt-brand);
+  }
+}
+.kt-ai-rate__input,
+.kt-ai-mem__input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px var(--kt-line);
+  background: var(--kt-bg);
+  color: var(--kt-ink);
+  font: inherit;
+  font-size: 13px;
+  line-height: 20px;
+  box-sizing: border-box;
+  resize: vertical;
+
+  &:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 1px var(--kt-ink-3);
+  }
+}
+
+// Layar Memory (drawer)
+.kt-ai-mem {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.kt-ai-mem__tabs {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.kt-ai-mem__n {
+  margin-left: 6px;
+  color: var(--kt-ink-3);
+}
+.kt-ai-mem__hint,
+.kt-ai-mem__count {
+  color: var(--kt-ink-3);
+  font-size: 12px;
+  line-height: 18px;
+}
+.kt-ai-mem__count {
+  margin-left: auto;
+}
+.kt-ai-mem__edit {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px var(--kt-line);
+  animation: kt-rise var(--dur-3) var(--ease-kt) both;
+}
+.kt-ai-mem__opts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.kt-ai-mem__list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.kt-ai-mem__item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 0.6px solid var(--kt-line);
+
+  .kt-ai-tools {
+    flex-wrap: nowrap;
+    opacity: 0;
+    transition: opacity var(--dur-2) var(--ease-kt);
+  }
+  &:hover .kt-ai-tools,
+  .kt-ai-tools:focus-within {
+    opacity: 1;
+  }
+}
+@media (hover: none) {
+  .kt-ai-tools--rate,
+  .kt-ai-mem__item .kt-ai-tools {
+    opacity: 1;
+  }
+}
+
+// Slash command: menu di atas Composer, sorotan baris meluncur halus
+.kt-ai-composer {
+  position: relative;
+}
+.kt-ai-slash {
+  top: auto;
+  right: auto;
+  left: 0;
+  bottom: calc(100% + 6px);
+  width: min(400px, 100%);
+  max-height: 320px;
+  overflow-y: auto;
+  transform-origin: bottom left;
+}
+.kt-ai-slash__head {
+  padding: 4px 10px 6px;
+  color: var(--kt-ink-3);
+  font-size: 12px;
+  line-height: 18px;
+}
+.kt-page .kt-ai-slash__item {
+  flex: none;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 7px 10px;
+  white-space: normal;
+  transition: background-color var(--dur-1) var(--ease-kt);
+
+  &[aria-selected='true'] {
+    background: var(--kt-surface);
+  }
+}
+.kt-ai-slash__cmd {
+  flex: none;
+  width: 116px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--kt-brand);
+  font-size: 13px;
+  line-height: 20px;
+}
+.kt-ai-slash__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+
+  > span:first-child {
+    color: var(--kt-ink);
+    font-size: 13px;
+    line-height: 20px;
+  }
+}
+.kt-ai-slash__hint {
+  overflow: hidden;
+  color: var(--kt-ink-3);
+  font-size: 12px;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kt-ai-slash__empty {
+  padding: 8px 10px;
+  color: var(--kt-ink-3);
+  font-size: 13px;
+}
+
+// Rating summary
+.kt-ai-fb {
+  margin-bottom: 16px;
+}
+.kt-ai-fb__period,
+.kt-ai-fb__label,
+.kt-ai-fb__empty {
+  color: var(--kt-ink-3);
+  font-size: 12px;
+  line-height: 18px;
+}
+.kt-ai-fb__empty {
+  font-size: 13px;
+}
+.kt-ai-fb__grid {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) 2fr 2fr;
+  gap: 24px;
+
+  @media (width < 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+.kt-ai-fb__stat,
+.kt-ai-fb__col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.kt-ai-fb__num {
+  color: var(--kt-ink);
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 500;
+}
+.kt-ai-fb__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--kt-ink-2);
+  font-size: 13px;
+  line-height: 20px;
+
+  span:last-child {
+    color: var(--kt-ink-3);
+    white-space: nowrap;
+  }
+}
+
+// ---- Kent settings (popup dari rail halaman chat) ----
+.kt-page .kt-ai-page__foot .kt-ai-page__set-btn {
+  margin-left: 0;
+
+  .kt-ai-page--compact & {
+    margin-left: 1px;
+  }
+}
+.kt-ai-set__body {
+  display: flex;
+  flex-direction: column;
+  max-height: min(70vh, 640px);
+  padding: 0 2px 4px 0;
+  overflow-y: auto;
+
+  .kt-set__line:first-child {
+    display: none;
+  }
+  .kt-set__row > :last-child {
+    flex: none;
+  }
+}
+.kt-ai-set__chip {
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: var(--kt-surface);
+  color: var(--kt-ink-3);
+  font-size: 12px;
+  line-height: 18px;
+
+  &[data-on] {
+    color: var(--kt-ink);
+    box-shadow: inset 0 0 0 0.6px var(--kt-line);
+    background: var(--kt-bg);
+  }
+}
+.kt-ai-set__modes {
+  display: flex;
+  padding: 2px;
+  border-radius: 8px;
+  background: var(--kt-surface);
+}
+.kt-page .kt-ai-set__mode {
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 6px;
+  color: var(--kt-ink-3);
+  font-size: 12px;
+  line-height: 18px;
+  transition:
+    background-color var(--dur-2) var(--ease-kt),
+    color var(--dur-2) var(--ease-kt);
+
+  &:hover {
+    color: var(--kt-ink);
+  }
+  &[aria-checked='true'] {
+    background: var(--kt-bg);
+    color: var(--kt-ink);
+    box-shadow: inset 0 0 0 0.6px var(--kt-line);
+  }
+}
+@media (max-width: 767px) {
+  .kt-ai-set__body .kt-set__row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 0;
+  }
+  .kt-ai-set__modes {
+    flex-wrap: wrap;
+  }
+}

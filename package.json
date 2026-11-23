@@ -1,0 +1,27 @@
+{
+  "name": "kent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Kent: AI chat assistant with an animated mascot (Next.js, OpenAI-compatible API)",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "lucide-react": "^1.66.0",
+    "next": "16.4.6",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "unpdf": "1.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "sass": "^1.89.0",
+    "typescript": "^5.8.0"
+  }
+}
